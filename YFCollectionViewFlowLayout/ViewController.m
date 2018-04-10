@@ -50,9 +50,10 @@
     
     YFCollectionViewAutoFlowLayout * flowLayout=[[YFCollectionViewAutoFlowLayout alloc] init];
     flowLayout.itemSize = CGSizeMake(1, 1);
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.interSpace = 10;
-    flowLayout.itemSizeType = ItemSizeEqualWidth;
+    flowLayout.numberOfItemsInLine = 3;
+    flowLayout.itemSizeType = ItemSizeEqualAll;
     flowLayout.delegate = self;
     
     UICollectionView *collectionView=[[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
@@ -72,15 +73,17 @@
 #pragma mark ====== YFCollectionViewAutoFlowLayoutDelegate =======
 -(CGSize)collectionViewItemSizeForIndexPath:(NSIndexPath *)indexPath{
 //    CGFloat width = self.collectionView.frame.size.width / self.index_arr.count;
-    if (indexPath.row % 2 == 0) {
-        return CGSizeMake(90, 30);
-    }
-    return CGSizeMake(90, 130);
+    
+    
+//    return CGSizeMake(300 / (arc4random() % 5 + 1), 40 + indexPath.section * 20); // 等高不等宽
+    return CGSizeMake(60 + indexPath.section * 20, 300 / (arc4random() % 5 + 1));// 等宽不等高
+//    return CGSizeMake(90, 90);// 等高等宽
+    
 }
 
-//-(CGSize)collectionViewSectionHeadSizeForSection:(NSInteger)section{
-//    return CGSizeMake(0, 0);
-//}
+-(CGSize)collectionViewSectionHeadSizeForSection:(NSInteger)section{
+    return CGSizeMake(WIDTH, 30);
+}
 
 #pragma mark ====== UICollectionViewDataSource =======
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -102,6 +105,7 @@
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     HeaderReusableView *header = [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderReusableView" forIndexPath:indexPath];
     header.titleStr = [NSString stringWithFormat:@"第%ld个区头",indexPath.section];
+    header.backgroundColor = RandomColor;
     return header;
 }
 

@@ -32,32 +32,32 @@
 @end
 
 typedef NS_ENUM(NSUInteger, ItemSizeType) {
-    ItemSizeEqualHeight = 0,
-    ItemSizeEqualWidth,
-    ItemSizeEqualAll,// 宽高相等
+    ItemSizeEqualHeight = 0,    // 等高不等宽
+    ItemSizeEqualWidth,         // 等宽不等高
+    ItemSizeEqualAll,           // 宽高相等, 横向滚动的时候具有分页效果
 };
 
 @interface YFCollectionViewAutoFlowLayout : UICollectionViewFlowLayout
 
 @property(nonatomic,weak)id <YFCollectionViewAutoFlowLayoutDelegate>delegate;
 
-/**
- *  每个item的间隔
- */
+// 每个item的间隔
 @property (nonatomic, assign)CGFloat interSpace;
 
-// 默认 ItemSizeEqualHeight,所有item等高
+// 默认 ItemSizeEqualAll,所有item等高等宽
 @property(nonatomic,assign)ItemSizeType itemSizeType;
 
-
-/***** 仅在 scrollDirection 为 UICollectionViewScrollDirectionHorizontal 有效 *****/
-// itemSize相等
-
-// 是否启动分页功能,默认为NO
-@property(nonatomic,assign)BOOL pageEnable;
-// 一行显示的items个数,在pageEnable为YES的时候起效
-@property(nonatomic,assign)NSInteger numberOfItemsInLine;
-// 每一页显示几行,默认为 2
+// 每一分区显示几行 >= 1
+/*
+ UICollectionViewScrollDirectionHorizontal 且 ItemSizeEqualAll   时,起效果
+ */
 @property(nonatomic,assign)NSInteger numberOfLines;
+
+// 一行显示的items个数,
+/*
+1. UICollectionViewScrollDirectionHorizontal 且 ItemSizeEqualAll   时,起效果
+2. UICollectionViewScrollDirectionVertical   且 ItemSizeEqualWidth 时,起效果
+ */
+@property(nonatomic,assign)NSInteger numberOfItemsInLine;
 
 @end
