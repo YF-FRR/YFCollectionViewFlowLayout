@@ -50,9 +50,10 @@
     
     YFCollectionViewAutoFlowLayout * flowLayout=[[YFCollectionViewAutoFlowLayout alloc] init];
     flowLayout.itemSize = CGSizeMake(1, 1);
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     flowLayout.interSpace = 10;
     flowLayout.numberOfItemsInLine = 3;
+    flowLayout.numberOfLines = 2;
     flowLayout.itemSizeType = ItemSizeEqualAll;
     flowLayout.delegate = self;
     
@@ -76,8 +77,9 @@
     
     
 //    return CGSizeMake(300 / (arc4random() % 5 + 1), 40 + indexPath.section * 20); // 等高不等宽
-    return CGSizeMake(60 + indexPath.section * 20, 300 / (arc4random() % 5 + 1));// 等宽不等高
-//    return CGSizeMake(90, 90);// 等高等宽
+//    return CGSizeMake(60 + indexPath.section * 20, 300 / (arc4random() % 5 + 1));// 等宽不等高
+//    return CGSizeMake(60 + indexPath.section * 20, 300 / (indexPath.row + 4 - indexPath.section));// 等宽不等高; 横向滚动
+    return CGSizeMake(90, 90);// 等高等宽
     
 }
 
@@ -87,7 +89,7 @@
 
 #pragma mark ====== UICollectionViewDataSource =======
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-    return 2;
+    return 1;
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{

@@ -32,9 +32,9 @@
 @end
 
 typedef NS_ENUM(NSUInteger, ItemSizeType) {
-    ItemSizeEqualHeight = 0,    // 等高不等宽
+    ItemSizeEqualAll= 0,        // 宽高相等, 横向滚动的时候具有分页效果
     ItemSizeEqualWidth,         // 等宽不等高
-    ItemSizeEqualAll,           // 宽高相等, 横向滚动的时候具有分页效果
+    ItemSizeEqualHeight ,       // 等高不等宽
 };
 
 @interface YFCollectionViewAutoFlowLayout : UICollectionViewFlowLayout
@@ -51,13 +51,13 @@ typedef NS_ENUM(NSUInteger, ItemSizeType) {
 /*
  UICollectionViewScrollDirectionHorizontal 且 ItemSizeEqualAll   时,起效果
  */
-@property(nonatomic,assign)NSInteger numberOfLines;
+@property(nonatomic,assign)int numberOfLines;
 
 // 一行显示的items个数,
 /*
 1. UICollectionViewScrollDirectionHorizontal 且 ItemSizeEqualAll   时,起效果
 2. UICollectionViewScrollDirectionVertical   且 ItemSizeEqualWidth 时,起效果
  */
-@property(nonatomic,assign)NSInteger numberOfItemsInLine;
+@property(nonatomic,assign)int numberOfItemsInLine;
 
 @end
