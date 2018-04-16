@@ -32,6 +32,8 @@
     [self.heightArr removeAllObjects];
     [self.attributeArray removeAllObjects];
     
+    self.collectionView.pagingEnabled = NO;
+    
     NSInteger totalSections = [self.collectionView numberOfSections];
     // 纵向滚动(完成处理)
     if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
@@ -62,13 +64,11 @@
     }else{
         
         if (_itemSizeType == ItemSizeEqualAll) {
+            self.collectionView.pagingEnabled = YES;
             //_numberOfLines 和 _numberOfItemsInLine 有效
-//            for (NSInteger i=0; i<totalSections; i++) {
-//                [self.widthArr addObject:@(_interSpace)];
-//                NSMutableArray *arr = [NSMutableArray array];
-//                [arr addObject:@(0)];
-//                [self.heightArr addObject:arr];
-//            }
+            for (NSInteger i=0; i<totalSections; i++) {
+                [self.widthArr addObject:@(0)];
+            }
             [self caculateItemFrameForScrollHorizontalWith:totalSections equalAll:YES];
         }else{
             //_numberOfLines 和 _numberOfItemsInLine 无效
@@ -87,38 +87,6 @@
 
 }
 
-/*
- 
- //清空数组赋初值
- [self.widthArr removeAllObjects];
- [self.attributeArray removeAllObjects];
- [self.heightArr removeAllObjects];
- 
- NSInteger totalSections = [self.collectionView numberOfSections];
- 
- if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
- for (NSInteger i=0; i<totalSections; i++) {
- NSMutableArray *arr = [NSMutableArray array];
- [arr addObject:@(_interSpace)];
- [self.widthArr addObject:arr];
- }
- [self caculateItemFrameForScrollVerticalWith:totalSections];
- }else{
- if (self.pageEnable) {// 横向分页
- 
- }else{
- for (NSInteger i=0; i<totalSections; i++) {
- [self.widthArr addObject:@(0)];
- NSMutableArray *arr = [NSMutableArray array];
- [arr addObject:@(_interSpace)];
- [self.heightArr addObject:arr];
- }
- [self caculateItemFrameForScrollHorizontalWith:totalSections];
- }
- 
- }
- 
- */
 
 #pragma mark ====== 计算纵向滚动时的itemFrame =======
 -(void)caculateItemFrameForScrollVerticalWith:(NSInteger)totalSections equalWidth:(BOOL)equalWidth{
@@ -130,13 +98,16 @@
         
         // 每个分区section的高度
         CGFloat sectionH = 0;
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionViewSectionHeadSizeForSection:)]) {
-            sectionH = [_delegate collectionViewSectionHeadSizeForSection:i].height;
+        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:sectionHeadSizeForSection:)]) {
+            sectionH = [_delegate collectionView:self.collectionView sectionHeadSizeForSection:i].height;
         }
-        // 每个分区section的attribute
-        UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
-        attribute.frame = CGRectMake(0, sectionY,self.collectionView.frame.size.width, sectionH);
-        [self.attributeArray addObject:attribute];
+       
+        if (sectionH != 0) {
+            // 每个分区section的attribute
+            UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
+            attribute.frame = CGRectMake(0, sectionY,self.collectionView.frame.size.width, sectionH);
+            [self.attributeArray addObject:attribute];
+        }
         
         //拿到每个分区所有item的个数
         NSInteger totalItems = [self.collectionView numberOfItemsInSection:i];
@@ -144,8 +115,8 @@
        if (equalWidth) {
            // 每个分区item的高度
            CGFloat itemW = 0;
-           if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)] && totalItems > 0) {
-               itemW = [_delegate collectionViewItemSizeForIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]].width;
+           if (_delegate && [_delegate respondsToSelector:@selector(collectionView:itemSizeForIndexPath:)] && totalItems > 0) {
+               itemW = [_delegate collectionView:self.collectionView itemSizeForIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]].width;
            }
            
            NSMutableArray *sectionHeightArr = _heightArr[i];
@@ -155,8 +126,8 @@
                CGSize itemSize = CGSizeZero;
                //获取每一个item的size
                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:j inSection:i];
-               if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)]) {
-                   itemSize = [_delegate collectionViewItemSizeForIndexPath:indexPath];
+               if (_delegate && [_delegate respondsToSelector:@selector(collectionView:itemSizeForIndexPath:)]) {
+                   itemSize = [_delegate collectionView:self.collectionView itemSizeForIndexPath:indexPath];
                }
                
                //获取height最小的列
@@ -180,8 +151,8 @@
        }else{
            // 每个分区item的高度
            CGFloat itemH = 0;
-           if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)] && totalItems > 0) {
-               itemH = [_delegate collectionViewItemSizeForIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]].height;
+           if (_delegate && [_delegate respondsToSelector:@selector(collectionView: itemSizeForIndexPath:)] && totalItems > 0) {
+               itemH = [_delegate collectionView:self.collectionView itemSizeForIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]].height;
            }
            
            
@@ -195,8 +166,8 @@
                CGSize itemSize = CGSizeZero;
                //获取每一个item的size
                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:j inSection:i];
-               if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)]) {
-                   itemSize = [_delegate collectionViewItemSizeForIndexPath:indexPath];
+               if (_delegate && [_delegate respondsToSelector:@selector(collectionView:itemSizeForIndexPath:)]) {
+                   itemSize = [_delegate collectionView:self.collectionView itemSizeForIndexPath:indexPath];
                }
                
                // 如果新的宽度大于屏幕的宽度则新起一行
@@ -229,26 +200,28 @@
 #pragma mark ====== 计算横向滚动时的itemFrame =======
 -(void)caculateItemFrameForScrollHorizontalWith:(NSInteger)totalSections equalAll:(BOOL)equalAll{
     if (equalAll) {
-        self.collectionView.pagingEnabled = NO;
         for (NSInteger section = 0; section < totalSections; section++) {
             // 每个分区section的y值
-            CGFloat sectionX = [self getSectionX:section];
+            self.widthArr[section] = @([self getSectionTotalWidth:section]);
+            // 每个分区section的y值
+            CGFloat sectionY = [self getSectionY:section];
             
             //拿到每个分区所有item的个数
             NSInteger totalItems = [self.collectionView numberOfItemsInSection:section];
             
-            // 每个分区section的高度
-            CGFloat sectionW = 0;
-            if (_delegate && [_delegate respondsToSelector:@selector(collectionViewSectionHeadSizeForSection:)] && totalItems > 0) {
-                sectionW = [_delegate collectionViewSectionHeadSizeForSection:section].width;
+            // 每个分区section的size
+            CGSize sectionSize = CGSizeZero;
+            if (_delegate && [_delegate respondsToSelector:@selector(collectionView:sectionHeadSizeForSection:)] && totalItems > 0) {
+                sectionSize = [_delegate collectionView:self.collectionView sectionHeadSizeForSection:section];
             }
-            
-            // 每个分区section的attribute
-            UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
-            attribute.frame = CGRectMake(sectionX, 0, sectionW,self.collectionView.frame.size.height);
-            [self.attributeArray addObject:attribute];
-            
-            
+
+            if (sectionSize.height != 0) {
+                // 每个分区section的attribute
+                UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
+                attribute.frame = CGRectMake(0, sectionY, sectionSize.width,sectionSize.height);
+                [self.attributeArray addObject:attribute];
+            }
+
             //第几行
             int col = 0;
             for (NSInteger i=0; i<totalItems; i++) {
@@ -256,8 +229,8 @@
                 //获取每一个item的size
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:section];
                 CGSize itemSize = CGSizeZero;
-                if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)]) {
-                    itemSize = [_delegate collectionViewItemSizeForIndexPath:indexPath];
+                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:itemSizeForIndexPath:)]) {
+                    itemSize = [_delegate collectionView:self.collectionView itemSizeForIndexPath:indexPath];
                 }
                 CGFloat itemW = itemSize.width;
                 
@@ -268,13 +241,19 @@
                     }
                     
                     // 当前的item是在第几列
-                    int count = (int) (i+j )/(_numberOfItemsInLine * 2);
+                    int count = (int) (i+j )/(_numberOfItemsInLine * _numberOfLines);
                     int vCount  = _numberOfItemsInLine * count;
-                    int vLine = ((int)(i+j) - count * _numberOfItemsInLine * 2) % _numberOfItemsInLine ;
+                    int vLine = ((int)(i+j) - count * _numberOfItemsInLine * _numberOfLines) % _numberOfItemsInLine ;
                     vCount += vLine;
                     
-                    CGFloat xPos = [self getSectionX:section] + sectionW + (itemW+_interSpace) * vCount ;
-                    CGFloat yPos = ( itemSize.height + _interSpace )* col;
+                    int currentPage = vCount /_numberOfItemsInLine ;
+                    if (currentPage >= 1) {
+                        BOOL morePage = (vCount - currentPage * _numberOfItemsInLine * _numberOfLines) > 0;
+                        currentPage += morePage ? 1 : 0;
+                    }
+                    
+                    CGFloat xPos = (itemW+_interSpace) * vCount + _interSpace + _interSpace * currentPage;
+                    CGFloat yPos = ( itemSize.height + _interSpace )* col + sectionY + sectionSize.height + _interSpace;
                     CGRect frame = CGRectMake(xPos, yPos, itemW, itemSize.height);
                     
                     NSIndexPath *newIndedPath = [NSIndexPath indexPathForItem:(i+j) inSection:section];
@@ -282,13 +261,13 @@
                     attribute.frame = frame;
                     
                     [self.attributeArray addObject:attribute];
-                    //                    NSLog(@"%ld  %@",(i+j),NSStringFromCGRect(frame) );
+                    NSLog(@"%ld  %@",(i+j),NSStringFromCGRect(frame) );
                 }
                 
                 i += _numberOfItemsInLine-1;
                 // 换行
                 col++;
-                if (col > 1) {
+                if (col > _numberOfLines - 1) {
                     col = 0;
                 }
             }
@@ -300,17 +279,19 @@
             
             // 每个分区section的高度
             CGSize sectionSize = CGSizeZero;
-            if (_delegate && [_delegate respondsToSelector:@selector(collectionViewSectionHeadSizeForSection:)]) {
-                sectionSize = [_delegate collectionViewSectionHeadSizeForSection:i];
+            if (_delegate && [_delegate respondsToSelector:@selector(collectionView:sectionHeadSizeForSection:)]) {
+                sectionSize = [_delegate collectionView:self.collectionView sectionHeadSizeForSection:i];
             }
             
             // 每个分区section的Y值
             CGFloat sectionY = [self getSectionY:i];
             
-            // 每个分区section的attribute
-            UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
-            attribute.frame = CGRectMake(0, sectionY,sectionSize.width, sectionSize.height);
-            [self.attributeArray addObject:attribute];
+            if (sectionSize.height != 0) {
+                // 每个分区section的attribute
+                UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
+                attribute.frame = CGRectMake(0, sectionY,sectionSize.width, sectionSize.height);
+                [self.attributeArray addObject:attribute];
+            }
             
             //拿到每个分区所有item的个数
             NSInteger totalItems = [self.collectionView numberOfItemsInSection:i];
@@ -328,8 +309,8 @@
                 CGSize itemSize = CGSizeZero;
                 //获取每一个item的size
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:j inSection:i];
-                if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)]) {
-                    itemSize = [_delegate collectionViewItemSizeForIndexPath:indexPath];
+                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:itemSizeForIndexPath:)]) {
+                    itemSize = [_delegate collectionView:self.collectionView itemSizeForIndexPath:indexPath];
                 }
                 
                 CGFloat xPos = [_widthArr[i] floatValue] + _interSpace ;
@@ -351,47 +332,41 @@
     
 }
 
+
 #pragma mark ====== 获取水平方向滑动时的每个分区的x值 =======
--(CGFloat)getSectionX:(NSInteger)section{
+-(CGFloat)getSectionTotalWidth:(NSInteger)section{
     
     CGFloat width = 0;
     
-    for (NSInteger i=0; i<section; i++) {
-        
-        CGFloat sectionW = 0;
-        
-        //拿到每个分区所有item的个数
-        NSInteger totalItems = [self.collectionView numberOfItemsInSection:i];
-        
-        // 求得每个分区的总列数
-        int count = (int) totalItems/(_numberOfItemsInLine * 2);
-        int vLine = ((int)totalItems - count * _numberOfItemsInLine * 2) / _numberOfItemsInLine ;
-        
-        int vCount = _numberOfItemsInLine * count;
-        if (vLine == 1) {
-            vCount += _numberOfItemsInLine;
-        }else{
-            vCount += ((int)totalItems - count * _numberOfItemsInLine * 2);
-        }
-        
-        //获取每一个item的size
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:i];
-        CGSize itemSize = CGSizeZero;
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)]) {
-            itemSize = [_delegate collectionViewItemSizeForIndexPath:indexPath];
-        }
-        
-        CGFloat itemW = itemSize.width;
-        CGFloat sectionHeaderW = 0;
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionViewSectionHeadSizeForSection:)]) {
-            sectionHeaderW = [_delegate collectionViewSectionHeadSizeForSection:i].width;
-        }
-        
-        sectionW = vCount == 0 ? 0 : (itemW + _interSpace) * vCount;
-        width += sectionW + sectionHeaderW;
-        
+    CGFloat sectionW = 0;
+    
+    //拿到每个分区所有item的个数
+    NSInteger totalItems = [self.collectionView numberOfItemsInSection:section];
+    
+    // 分页的个数
+    int count = (int) totalItems/(_numberOfItemsInLine * _numberOfLines);
+    // 出去布满当前页,剩下没有布满的item个数
+    int vLine = ((int)totalItems - count * _numberOfItemsInLine * _numberOfLines) / _numberOfItemsInLine ;
+    // 求得每个分区的总列数
+    int vCount = _numberOfItemsInLine * count;
+    if (vLine >= 1) {
+        vCount += _numberOfItemsInLine;
+    }else{
+        vCount += ((int)totalItems - count * _numberOfItemsInLine * _numberOfLines);
     }
     
+    //获取每一个item的size
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
+    CGSize itemSize = CGSizeZero;
+    if (_delegate && [_delegate respondsToSelector:@selector(collectionView:itemSizeForIndexPath:)]) {
+        itemSize = [_delegate collectionView:self.collectionView itemSizeForIndexPath:indexPath];
+    }
+    
+    CGFloat itemW = itemSize.width;
+    
+    sectionW = vCount == 0 ? 0 : (itemW + _interSpace) * vCount;
+    width += sectionW ;
+    self.widthArr[section] = @(width);
     return width;
     
 }
@@ -411,14 +386,14 @@
         
         // 每个分区item的高度
         CGFloat itemH = 0;
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)] && totalItems > 0) {
-            itemH = [_delegate collectionViewItemSizeForIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]].height;
+        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:itemSizeForIndexPath:)] && totalItems > 0) {
+            itemH = [_delegate collectionView:self.collectionView itemSizeForIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]].height;
         }
         
         CGFloat sectionH = 0;
         // 每个分区section的高度
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionViewSectionHeadSizeForSection:)]) {
-            sectionH = [_delegate collectionViewSectionHeadSizeForSection:i].height;
+        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:sectionHeadSizeForSection:)]) {
+            sectionH = [_delegate collectionView:self.collectionView sectionHeadSizeForSection:i].height;
         }
         if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
             if (_itemSizeType == ItemSizeEqualAll || _itemSizeType == ItemSizeEqualWidth) {
@@ -429,7 +404,7 @@
             
         }else{
             if (_itemSizeType == ItemSizeEqualAll) {
-                y += sectionH + _interSpace + itemH + _interSpace;
+                y += sectionH + _interSpace * (_numberOfLines + 1) + itemH * _numberOfLines ;
             }else{
                 y += [self maxColumnHightValue:i] + sectionH + _interSpace * 2;
                 
@@ -452,15 +427,15 @@
     for (NSInteger i=0; i<totalSections; i++) {
         // 每个分区section的高度
         CGFloat sectionH = 0;
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionViewSectionHeadSizeForSection:)]) {
-            sectionH = [_delegate collectionViewSectionHeadSizeForSection:i].height;
+        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:sectionHeadSizeForSection:)]) {
+            sectionH = [_delegate collectionView:self.collectionView sectionHeadSizeForSection:i].height;
         }
         //拿到每个分区所有item的个数
         NSInteger totalItems = [self.collectionView numberOfItemsInSection:i];
         // 每个分区item的高度
         CGFloat itemH = 0;
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)] && totalItems > 0) {
-            itemH = [_delegate collectionViewItemSizeForIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]].height;
+        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:itemSizeForIndexPath:)] && totalItems > 0) {
+            itemH = [_delegate collectionView:self.collectionView itemSizeForIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]].height;
         }
         if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {// 纵向滚动
             if (_itemSizeType == ItemSizeEqualAll || _itemSizeType == ItemSizeEqualWidth) {
@@ -470,7 +445,13 @@
             }
 
         }else{
-            height += sectionH + _interSpace + itemH + _interSpace;
+            height = self.collectionView.frame.size.height;
+//            if (self.itemSizeType == ItemSizeEqualAll) {
+//                height += sectionH + itemH * _numberOfLines + _interSpace * (_numberOfLines + 1) ;
+//            }else{
+//                height += sectionH + _interSpace + itemH + _interSpace;
+//            }
+
         }
         
     }
@@ -479,7 +460,17 @@
         height += _interSpace * totalSections ;
         width =self.collectionView.frame.size.width;
     }else{           // 横向滚动     
-        width = [self maxLineWidthValue] + _interSpace;
+
+        width = [self maxLineWidthValue];
+        if (self.itemSizeType == ItemSizeEqualAll) {
+            int pageCount = (int) (width / self.collectionView.frame.size.width);
+            if (width - pageCount * self.collectionView.frame.size.width != 0) {
+                width = (pageCount + 1) * self.collectionView.frame.size.width;
+            }
+        }else{
+            width = [self maxLineWidthValue] + _interSpace;
+        }
+        
     }
     
     return CGSizeMake(width, height);
@@ -586,7 +577,4 @@
     }
 }
 
--(ItemSizeType)itemSizeType{
-    return ItemSizeEqualAll;
-}
 @end

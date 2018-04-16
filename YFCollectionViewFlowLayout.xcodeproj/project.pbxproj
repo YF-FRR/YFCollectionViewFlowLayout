@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		590E6565208491B600C23D0F /* KindCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 590E6564208491B600C23D0F /* KindCollectionViewCell.m */; };
 		5966F8E320737F1400A5725B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5966F8E220737F1400A5725B /* AppDelegate.m */; };
 		5966F8E920737F1400A5725B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5966F8E720737F1400A5725B /* Main.storyboard */; };
 		5966F8EB20737F1400A5725B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5966F8EA20737F1400A5725B /* Assets.xcassets */; };
@@ -20,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		590E6563208491B600C23D0F /* KindCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KindCollectionViewCell.h; sourceTree = "<group>"; };
+		590E6564208491B600C23D0F /* KindCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KindCollectionViewCell.m; sourceTree = "<group>"; };
 		5966F8DE20737F1400A5725B /* YFCollectionViewFlowLayout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YFCollectionViewFlowLayout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5966F8E120737F1400A5725B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5966F8E220737F1400A5725B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -76,6 +79,8 @@
 				5966F8F720737FD800A5725B /* YFCollectionViewAutoFlowLayout.m */,
 				5966F900207380C300A5725B /* HeaderReusableView.h */,
 				5966F901207380C300A5725B /* HeaderReusableView.m */,
+				590E6563208491B600C23D0F /* KindCollectionViewCell.h */,
+				590E6564208491B600C23D0F /* KindCollectionViewCell.m */,
 				5966F9032073810700A5725B /* IndexIndicatorCell.h */,
 				5966F9042073810700A5725B /* IndexIndicatorCell.m */,
 				5966F8FD207380A800A5725B /* UIView+Extension.h */,
@@ -162,6 +167,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				590E6565208491B600C23D0F /* KindCollectionViewCell.m in Sources */,
 				5966F908207389F600A5725B /* ViewController.m in Sources */,
 				5966F902207380C300A5725B /* HeaderReusableView.m in Sources */,
 				5966F8FF207380A900A5725B /* UIView+Extension.m in Sources */,

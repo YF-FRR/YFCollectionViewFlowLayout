@@ -18,7 +18,7 @@
  *
  *  @return item的尺寸
  */
--(CGSize)collectionViewItemSizeForIndexPath:(NSIndexPath *)indexPath;
+-(CGSize)collectionView:(UICollectionView *)collectionView itemSizeForIndexPath:(NSIndexPath *)indexPath;
 
 @optional
 /**
@@ -27,7 +27,7 @@
  @param section 分区
  @return 返回section的headerView的大小
  */
--(CGSize)collectionViewSectionHeadSizeForSection:(NSInteger)section;
+-(CGSize)collectionView:(UICollectionView *)collectionView sectionHeadSizeForSection:(NSInteger)section;
 
 @end
 
