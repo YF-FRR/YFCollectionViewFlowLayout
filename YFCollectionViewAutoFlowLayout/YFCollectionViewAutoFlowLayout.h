@@ -1,12 +1,18 @@
 //
 //  YFCollectionViewAutoFlowLayout.h
-//  JHCommunityClient
 //
-//  Created by ios_yangfei on 17/4/8.
-//  Copyright © 2017年 JiangHu. All rights reserved.
+//
+//  Created by YangFei on 2018/4/3.
+//  Copyright © 2018年 YangFei. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+
+typedef NS_ENUM(NSUInteger, ItemSizeType) {
+    ItemSizeEqualAll= 0,        // 宽高相等, 横向滚动的时候具有分页效果
+    ItemSizeEqualWidth,         // 等宽不等高
+    ItemSizeEqualHeight ,       // 等高不等宽
+};
 
 @protocol YFCollectionViewAutoFlowLayoutDelegate <NSObject>
 
@@ -30,12 +36,6 @@
 -(CGSize)collectionView:(UICollectionView *)collectionView sectionHeadSizeForSection:(NSInteger)section;
 
 @end
-
-typedef NS_ENUM(NSUInteger, ItemSizeType) {
-    ItemSizeEqualAll= 0,        // 宽高相等, 横向滚动的时候具有分页效果
-    ItemSizeEqualWidth,         // 等宽不等高
-    ItemSizeEqualHeight ,       // 等高不等宽
-};
 
 @interface YFCollectionViewAutoFlowLayout : UICollectionViewFlowLayout
 

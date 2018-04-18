@@ -1,9 +1,9 @@
 //
-//  YFCollectionViewLayout.m
-//  LayoutTest
+//  YFCollectionViewAutoFlowLayout.m
+//  
 //
-//  Created by ios_yangfei on 16/11/23.
-//  Copyright © 2016年 jianghu3. All rights reserved.
+//  Created by YangFei on 2018/4/3.
+//  Copyright © 2018年 YangFei. All rights reserved.
 //
 
 #import "YFCollectionViewAutoFlowLayout.h"

@@ -54,9 +54,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		592A6D642087195E00EE2809 /* YFCollectionViewAutoFlowLayout */ = {
+			isa = PBXGroup;
+			children = (
+				5966F8FA20737FD900A5725B /* YFCollectionViewAutoFlowLayout.h */,
+				5966F8F720737FD800A5725B /* YFCollectionViewAutoFlowLayout.m */,
+			);
+			path = YFCollectionViewAutoFlowLayout;
+			sourceTree = "<group>";
+		};
 		5966F8D520737F1400A5725B = {
 			isa = PBXGroup;
 			children = (
+				592A6D642087195E00EE2809 /* YFCollectionViewAutoFlowLayout */,
 				5966F8E020737F1400A5725B /* YFCollectionViewFlowLayout */,
 				5966F8DF20737F1400A5725B /* Products */,
 			);
@@ -75,8 +85,6 @@
 			children = (
 				5966F907207389F500A5725B /* ViewController.h */,
 				5966F906207389F500A5725B /* ViewController.m */,
-				5966F8FA20737FD900A5725B /* YFCollectionViewAutoFlowLayout.h */,
-				5966F8F720737FD800A5725B /* YFCollectionViewAutoFlowLayout.m */,
 				5966F900207380C300A5725B /* HeaderReusableView.h */,
 				5966F901207380C300A5725B /* HeaderReusableView.m */,
 				590E6563208491B600C23D0F /* KindCollectionViewCell.h */,
