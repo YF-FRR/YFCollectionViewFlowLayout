@@ -46,6 +46,7 @@ static NSInteger seciotn_1 = -1;
     [super viewDidLoad];
     [self changeFlowlayoutIndex];
     [self testCollectionFlowLayout];
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 -(void)changeFlowlayoutIndex{
@@ -70,7 +71,7 @@ static NSInteger seciotn_1 = -1;
     collectionView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:collectionView];
     self.kindCollectionView = collectionView;
-    [self.kindCollectionView addLayoutConstraint:UIEdgeInsetsMake(34, 0, HEIGHT - 100, 0)];
+    [self.kindCollectionView addLayoutConstraint:UIEdgeInsetsMake(34, 0, -(HEIGHT - 120), 0)];
     
 }
 
@@ -97,7 +98,7 @@ static NSInteger seciotn_1 = -1;
     collectionView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
-    [self.collectionView addLayoutConstraint:UIEdgeInsetsMake(120, 0, -100, 0)];
+    [self.collectionView addLayoutConstraint:UIEdgeInsetsMake(140, 0, -100, 0)];
 
 }
 
@@ -175,10 +176,8 @@ static NSInteger seciotn_1 = -1;
     return header;
 }
 
-
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
+
     if (indexPath.section == 0) {
         seciotn_0 = indexPath.item;
     }else{

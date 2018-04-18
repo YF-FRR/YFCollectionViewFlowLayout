@@ -30,9 +30,7 @@
     [self.widthArr removeAllObjects];
     [self.heightArr removeAllObjects];
     [self.attributeArray removeAllObjects];
-    
-    self.collectionView.pagingEnabled = NO;
-    
+
     NSInteger totalSections = [self.collectionView numberOfSections];
     // 纵向滚动(完成处理)
     if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
@@ -63,7 +61,6 @@
     }else{
         
         if (_itemSizeType == ItemSizeEqualAll) {
-            self.collectionView.pagingEnabled = YES;
             //_numberOfLines 和 _numberOfItemsInLine 有效
             for (NSInteger i=0; i<totalSections; i++) {
                 [self.widthArr addObject:@(0)];
@@ -80,8 +77,7 @@
             [self caculateItemFrameForScrollHorizontalWith:totalSections equalAll:NO];
             
         }
-     
-        
+ 
     }
 
 }
@@ -198,7 +194,9 @@
 
 #pragma mark ====== 计算横向滚动时的itemFrame =======
 -(void)caculateItemFrameForScrollHorizontalWith:(NSInteger)totalSections equalAll:(BOOL)equalAll{
+
     if (equalAll) {
+        
         for (NSInteger section = 0; section < totalSections; section++) {
             // 每个分区section的y值
             self.widthArr[section] = @([self getSectionTotalWidth:section]);
@@ -293,13 +291,7 @@
             
             //拿到每个分区所有item的个数
             NSInteger totalItems = [self.collectionView numberOfItemsInSection:i];
-            
-            // 每个分区item的宽度
-//            CGSize itemSize = CGSizeZero;
-//            if (_delegate && [_delegate respondsToSelector:@selector(collectionViewItemSizeForIndexPath:)] && totalItems > 0) {
-//                itemSize = [_delegate collectionViewItemSizeForIndexPath:[NSIndexPath indexPathForItem:0 inSection:i]];
-//            }
-            
+
             CGFloat yPos = _interSpace + sectionY + sectionSize.height;
             
             for (NSInteger j=0; j<totalItems; j++) {
@@ -413,12 +405,13 @@
     }
     
     return y;
-
 }
 
 #pragma mark ====== 计算collectionView的内容大小 =======
 - (CGSize)collectionViewContentSize {
    
+    self.collectionView.pagingEnabled = NO;
+    
     CGFloat height = 0;
     CGFloat width = 0;
     NSInteger totalSections = [self.collectionView numberOfSections];
@@ -444,11 +437,6 @@
 
         }else{
             height = self.collectionView.frame.size.height;
-//            if (self.itemSizeType == ItemSizeEqualAll) {
-//                height += sectionH + itemH * _numberOfLines + _interSpace * (_numberOfLines + 1) ;
-//            }else{
-//                height += sectionH + _interSpace + itemH + _interSpace;
-//            }
 
         }
         
@@ -461,6 +449,7 @@
 
         width = [self maxLineWidthValue];
         if (self.itemSizeType == ItemSizeEqualAll) {
+            self.collectionView.pagingEnabled = YES;
             int pageCount = (int) (width / self.collectionView.frame.size.width);
             if (width - pageCount * self.collectionView.frame.size.width != 0) {
                 width = (pageCount + 1) * self.collectionView.frame.size.width;
