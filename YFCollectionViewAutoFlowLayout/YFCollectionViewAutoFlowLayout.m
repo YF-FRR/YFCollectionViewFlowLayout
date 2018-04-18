@@ -564,4 +564,8 @@
     }
 }
 
+-(int)numberOfItemsInLine{
+    return MAX(_numberOfItemsInLine, 1);
+}
+
 @end
