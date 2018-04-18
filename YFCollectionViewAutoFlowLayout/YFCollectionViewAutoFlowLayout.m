@@ -136,7 +136,7 @@
                CGFloat yPos = [sectionHeightArr[currentCol] floatValue] + sectionY + sectionH + _interSpace;
                
                CGRect frame = CGRectMake(xPos, yPos, itemW, itemSize.height);
-               NSLog(@"%@  %@",indexPath, NSStringFromCGRect(frame));
+
                UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
                attribute.frame = frame;
                
@@ -261,7 +261,6 @@
                     attribute.frame = frame;
                     
                     [self.attributeArray addObject:attribute];
-                    NSLog(@"%ld  %@",(i+j),NSStringFromCGRect(frame) );
                 }
                 
                 i += _numberOfItemsInLine-1;
