@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
 
 
   s.name         = "YFCollectionViewAutoFlowLayout"
-  s.version      = "1.2.2"
+  s.version      = "1.2.3"
   s.summary      = "自定义流水布局是实现自己想要的布局"
 
   s.description  = <<-DESC

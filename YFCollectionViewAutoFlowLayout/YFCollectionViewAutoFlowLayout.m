@@ -560,13 +560,6 @@
     return MAX(_numberOfLines, 1);
 }
 
-- (void)setInterSpace:(CGFloat)interSpace {
-    if (_interSpace != interSpace) {
-        _interSpace = interSpace;
-        [self invalidateLayout];
-    }
-}
-
 -(int)numberOfItemsInLine{
     return MAX(_numberOfItemsInLine, 1);
 }
