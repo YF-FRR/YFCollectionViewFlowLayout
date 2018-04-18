@@ -26,8 +26,8 @@
 -(void)prepareLayout{
     [super prepareLayout];
     
-    [self numberOfItemsInLine];
-    [self numberOfLines];
+    _numberOfItemsInLine = [self numberOfItemsInLine];
+    _numberOfLines = [self numberOfLines];
     
     //清空数组赋初值
     [self.widthArr removeAllObjects];
