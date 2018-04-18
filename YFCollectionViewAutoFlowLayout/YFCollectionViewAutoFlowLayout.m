@@ -23,7 +23,6 @@
 @implementation YFCollectionViewAutoFlowLayout
 
 
-
 -(void)prepareLayout{
     [super prepareLayout];
     
@@ -506,7 +505,7 @@
 - (CGFloat)maxLineWidthValue{
     __block CGFloat maxWidth = CGFLOAT_MIN;
     [_widthArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CGFloat currentWidth = [_widthArr[idx] floatValue];
+        CGFloat currentWidth = [(NSNumber *)obj floatValue];
         if (currentWidth > maxWidth) {
             maxWidth = currentWidth;
         }
